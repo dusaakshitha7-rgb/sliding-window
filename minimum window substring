@@ -1,0 +1,26 @@
+class Solution:
+    def minWindow(self, s: str, t: str) -> str:
+        hashArray=[0]*256
+        for char in t:
+            hashArray[ord(char)]+=1
+        left,right=0,0
+        minLen=float("inf")
+        sIndex=-1
+        count=0
+        n=len(s)
+        while(right<n):
+            if(hashArray[ord(s[right])]>0):
+                count+=1
+            hashArray[ord(s[right])]-=1
+            while(count==len(t)):
+                if(right-left+1<minLen):
+                    sIndex=left
+                    minLen=min(minLen,right-left+1)
+                hashArray[ord(s[left])]+=1
+                if(hashArray[ord(s[left])]>0):
+                    count-=1
+                left+=1
+            right+=1
+        if(sIndex==-1):
+            return ""
+        return s[sIndex:sIndex+minLen]
